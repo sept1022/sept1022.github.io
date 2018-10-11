@@ -1,3 +1,8 @@
+{% if site.mathjax == true %}
+<!-- MathJax -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+{% endif %}
+
 {% if site.footer_scripts %}
   {% for script in site.footer_scripts %}
     {% if script contains "://" %}
@@ -10,7 +15,6 @@
 {% else %}
   <script src="{{ '/assets/js/main.min.js' | relative_url }}"></script>
   <script src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 {% endif %}
 
 {% if site.search == true or page.layout == "search" %}
