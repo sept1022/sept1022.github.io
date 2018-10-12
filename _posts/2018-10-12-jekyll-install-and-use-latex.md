@@ -128,7 +128,7 @@ Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most ou
 Posting이 제대로 되었는지 127.0.0.1:4000을 통해 확인합시다.
 
 ## 6. Apply Latex
-Github Markdown은 Latex를 지원하지 않으므로 수식이 필요한 Posting에 적용하면, 수식을 사용할 수 있습니다. (필자는 `_include/head.html`에 적용함)  
+Github Markdown은 Latex를 지원하지 않으므로 수식이 필요한 Posting에 아래의 내용처럼 MathJax를 적용하면, 수식을 사용할 수 있습니다. (필자는 `_include/head.html`에 적용함)  
 
 {% highlight bash %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
