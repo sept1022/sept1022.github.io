@@ -1,5 +1,5 @@
 ---
-title: "[OSX] Jekyll with minimal mistake Using Latex"
+title: "[OSX] Installing Jekyll with minimal mistake and Using Latex"
 categories:
   - Jekyll
 tags:
