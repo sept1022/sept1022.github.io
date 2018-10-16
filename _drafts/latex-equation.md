@@ -5,6 +5,7 @@ categories:
 tags:
   - latex
   - equation
+sitemap: false
 ---
 
 지난 포스트의 마지막 항목([6. Apply Latex]({% post_url 2018-10-12-jekyll-install-and-use-latex %}))에서 
