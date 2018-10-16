@@ -15,6 +15,10 @@
   document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
 </script>
 
+<script src="/assets/js/mermaid.js"></script>
+<link rel="stylesheet" href="/assets/css/mermaid.css">
+<script>mermaid.initialize({startOnLoad:true});</script>
+
 <!-- For all browsers -->
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
 
