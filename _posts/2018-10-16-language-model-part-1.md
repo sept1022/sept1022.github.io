@@ -55,13 +55,15 @@ n-gram 에서의 마지막 단어는 예측할 단어입니다. 보통 $$n\ =\ 2
 
 > Sue swallowed the large green _
 
+모델이 보유하고 있는 history에 대한 조건부 확률로 정의됩니다.
+
 |Model|Equation|
 |-----|--------|
 |bigram|$$ P(w_n\|green)$$|
 |trigram|$$ P(w_n\|large,green)$$|
 |four-gram|$$ P(w_n\|the,large,green)$$|
 
-즉 _Vocabulary_ 에 존재하는 단어 중에서 모델의 확률을 최대로 하는 $$w_x$$를 찾아야 하는 것입니다.
+즉, _Vocabulary_ 에 존재하는 단어 중에서 모델의 확률을 최대로 하는 $$w_x$$를 찾아야 하는 것입니다.
 
 > $$argmax_{x \in \mathcal{V}}P(w_x|history)$$
 
@@ -115,7 +117,7 @@ print('sents:', len(sents), 'words:', len(words), 'avg length:', len(words)/len(
 
 총 94,805 문장에, 2,523,443개의 단어가 존재하고, 각 문장은 약 26개의 단어로 구성되어 있습니다.
 
-unigram에 대한 분포를 볼까요?
+unigram에 대한 분포를 살펴보겠습니다.
 
 ```python
 unigram = Counter(words)
@@ -125,7 +127,7 @@ print('words:', len(words), 'vocabulary:', len(unigram))
     words: 2523442 vocabulary: 50738
 
 2,523,443의 단어는 50,738개 유니크한 단어로 이루어져 있습니다. 
-단어들의 빈도를 볼까요?
+단어들의 빈도를 살펴보겠습니다.
 
 ```python
 unigram.most_common()[:20]
@@ -157,14 +159,15 @@ unigram.most_common()[:20]
 ## Pre-processing
 
 Language Modeling을 다룰 때 가장 중요한 것은 data sparseness를 어떻게 극복할 것인가 하는 문제입니다.
+많은 접근 방법이 있겠으나, 기본적이고 적용이 쉬운 방법들을 적용하겠습니다.
 
 nltk에서 제공하는 `gutenberg.sents()`는 이미 기호가 제거된 형태로 잘 분리된 형태지만, 
 기호는 더 많은 n-gram의 수를 요구하므로, string.punctuation에 해당하는 기호는 제거하도록 하겠습니다.
 그리고, 문장의 시작과 끝을 표시하는 `<s>`s와 `</s>`를 추가하겠습니다.
 
-실제 적용하는 과정에서는, 보통 모든 단어에 대한 n-gram을 생성하지 않고, 빈도수가 일정 이상되는 단어에 대해서
-n-gram을 생성하고, 나머지 단어는 `UNK` 태그로 Out-Of-Vocabulary로 취급합니다. 또한, 어떤 학습 데이터도 모든 
-숫자를 포함할 수 없으므로, 숫자는 `NUM`으로 치환하여 사용하도록 하겠습니다. 
+실제 적용하는 과정에서는, 보통 모든 단어에 대한 n-gram을 생성하지 않고, 일정한 빈도수 이상의 단어에 대해서
+n-gram을 생성하고, 나머지 단어는 `_UNK_` 태그로 치환하여 Out-Of-Vocabulary로 취급합니다. 
+또한, 어떤 학습 데이터도 모든 숫자를 포함할 수 없으므로, 숫자는 `_NUM_`으로 치환하여 사용하도록 하겠습니다. 
 
 ```python
 import string
@@ -236,7 +239,8 @@ print('trigram: ', list(trigram.items())[:10])
     bigram: [('<s> Emma', 223), ('Emma by', 2), ('by Jane', 3), ('Jane Austen', 2), ('Austen _NUM_', 2), ('_NUM_ </s>', 294), ('<s> VOLUME', 3), ('VOLUME I', 1), ('I </s>', 117), ('<s> CHAPTER', 276)]
     trigram: [('<s> Emma by', 1), ('Emma by Jane', 1), ('by Jane Austen', 2), ('Jane Austen _NUM_', 2), ('Austen _NUM_ </s>', 2), ('<s> VOLUME I', 1), ('VOLUME I </s>', 1), ('<s> CHAPTER I', 8), ('CHAPTER I </s>', 10), ('<s> Emma Woodhouse', 1)]
 
-첫 번째 문장 *Emma by Jane Austen 1816*에 대해 n-gram 모델이 잘 생성된 것을 확인할 수 있습니다.   
+첫 번째 문장 *Emma by Jane Austen 1816*에 대해 n-gram 모델이 잘 생성된 것을 확인할 수 있습니다.
+   
 이제 생성된 모델을 파일에 저장하겠습니다.
 
 ```python
@@ -249,5 +253,5 @@ write_model('./bigram.txt', bigram)
 write_model('./trigram.txt', trigram)
 ```
  
-이번 포스트에서는 language modeling의 전반적인 개념과 n-gram을 만드는 방법을 알아보았습니다.
+이번 포스트에서는 language modeling의 전반적인 개념과 n-gram을 만드는 방법을 알아보았으니, 
 다음 포스트에서는 좋은 예측기(good statistical estimator)를 찾는 방법에 대해 알아보겠습니다. 
