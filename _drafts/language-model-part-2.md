@@ -7,7 +7,8 @@ tags:
   - nlp
   - statistical
   - language model
-sitemap: false 
+sitemap: true
+toc: true
 ---
 
 > 본 포스트 시리즈는 FSNLP(Foundation of Statistical Natural Language Processing)의 내용 중에서,
@@ -31,7 +32,7 @@ $$
 
 ### MLE(Maximum Likelihood Estimation, 최대 우도 측정)
 
-**wikipedea:** 
+**wikipedia:** 
 In statistics, maximum likelihood estimation (MLE) is a method of estimating the parameters of
  a statistical model, given observations. MLE attempts to find the parameter values that maximize
  the likelihood function, given the observations.
@@ -43,7 +44,7 @@ MLE에 대한 자세한 설명은 [이전 포스팅]({% post_url 2018-10-18-prob
 
 #### MLE estimates from relative frequencies
 n-gram의 MLE는 _relative frequency_ 로 구할 수 있습니다. trigram 모델은 선행하는 두 단어 $ w_{n-2}, w_{n-1} $ 를 
-$ w_1 $ 을 예측하기 위한 _history_ 혹은 _context_ 로 사용합니다. 만일 특정 코퍼스에서, `come across`의 이후에 발생하는 단어를 보니,
+$ w_1 $ 을 예측하기 위한 _history_ 혹은 _context_ 로 사용합니다. 만일 특정 코퍼스에서, `come across`의 이후에 출현하는 단어로
 `as` 가 8번, `more, a`가 한 번씩 출현했다면, _relative_frequency_ 는 다음과 같이 정의됩니다.
 
 $$
@@ -60,9 +61,24 @@ $$
 $ P_{MLE}(w_1 \cdots w_n) = \frac{C(w_1 \cdots w_n)}{N} $
 $ P_{MLE}(w_n \mid w_1 \cdots w_n) = \frac{C(w_1 \cdots w_n)/N}{C(w_1 \cdots w_n-1)/N} = \frac{C(w_1 \cdots w_n)}{C(w_1 \cdots w_{n-1})} $
 
-이제 n-gram에 대해 MLE를 계산할 수 있으니, 지난 시간에 구축했던 n-gram model을 활용해보겠습니다.
+### Sentence probability
 
-### Examine n-gram Probability
+MLE가 찾는 $ P(x \mid \theta) $ 정의를 다시 보겠습니다. 문장의 단위로 생각하면, $ \theta $ 는 n-gram model을 구성하는 파라미터로, 
+각 n-gram의 출현 빈도를 의미하고, $ x $ 는 문장을 구성하는 n-gram 집합을 의미합니다. 지난 포스트에서 논의한 것처럼, $ P(x \mid \theta) $ 는 다음과 같이 정의됩니다.
+
+$$ P(sentence) = \prod_{i}^N P(x_i \mid \theta) $$ 
+
+여기에서, n-gram에 대한 수식으로 치환하면, 
+
+$$ P(sentence) = \prod_{i}^N P(w_i \mid w_{i-n+1} \cdots w_{i-1}) $$
+
+반복된 확률의 곱은 underflow를 야기할 가능성이 있으며, adding 연산이 multiply 연산보다 빠르다는 점으로 인해 log를 취하여 다음의 식으로 사용하기도 합니다.  
+
+$$ \ln P(sentence) = \sum_{i}^N P(w_i \mid w_{i-n+1} \cdots w_{i-1}) $$
+
+### Apply Maximum Likelihood Estimation
+
+n-gram과 sentence에 대해 MLE를 계산할 방법이 마련되었으니, 지난 시간에 구축했던 n-gram model을 활용해보겠습니다.
 구축했던 데이터는 `n-gram`과 `n-gram`이 출현한 빈도를 `\t`문자로 구분했습니다. 이 점을 고려하여 `dictionary`로 로딩하면 되겠습니다. 
 
 ```python
@@ -111,7 +127,10 @@ def get_n_gram_prob(sentence):
     print('%10s%8s%8s%8s' %('word', 'unigram', 'bigram', 'trigram'))
     for i in range(0, len(sentence)):
     	#unigram
-        print('%10s %0.5f' % (sentence[i], unigram_model[sentence[i]]/N), end=' ')
+    	if sentence[i] not in unigram_model:
+    		print('%5s' % 'unseen')
+    	else
+        	print('%10s %0.5f' % (sentence[i], unigram_model[sentence[i]]/N), end=' ')
         
         #bigram
         if i > 0:
@@ -149,22 +168,28 @@ get_n_gram_prob(sentence)
             to 0.01871 0.21053  unseen 
           both 0.00041 0.00027 0.00000 
        sisters 0.00006 0.00000 0.00000 
-          </s> 0.04061 0.11194  unseen 
+          </s> 0.04061 0.11194  unseen
 
-likelihood function
-If one fixes the observed data, and then considers the space of all pos- sible parameter assignments 
-within a certain distribution (here a trigram model) given the data, then statisticians refer to this as a likelihood function.
-The maximum likelihood estimate is so called because it is the choice of parameter values which gives the highest probability 
-to the training corpus.4 The estimate that does that is the one shown above. It does not waste any probability mass on events 
-that are not in the train- ing corpus, but rather it makes the probability of observed events as high as it can subject to 
-the normal stochastic constraints. But the MLE is in general unsuitable for statistical inference in NLP. 
-The problem is the sparseness of our data (even if we are using a large corpus). While a few words are common, 
-the vast majority of words are very uncommon – and longer n-grams involving them are thus much rarer again. 
-The MLE assigns a zero probability to unseen events, and since the probability of a long string is generally 
-computed by multiplying the probabilities of subparts, these zeroes will propagate and give us bad (zero probability) 
-estimates for the probability of sentences when we just happened not to see certain n-grams in the training text.5 
-With respect to the example above, the MLE is not capturing the fact that there are other words which can follow comes across, for example the and some.
+### Examine Probability
 
-MLE는 관측된 데이터가 발생할 가능성을 최대로 하는 것이기 때문에 , 우리가 다루는 NLP에서의 확률적인 추론에 부적합하다.
+위 결과 중에서 `0.00000`으로 출력된 결과는 `history`, 즉 (n-1)-gram이 존재하지 않는 경우이고, `unseen`으로 출력된 것은 n-gram이 존재하지 
+않는 경우입니다. 우리는 그 동안 training data에 대해 unigram, bigram, trigram에 대한 모델을 생성했고, 위의 문장에 존재하는 n-gram에 대해 
+MLE를 적용하여 확률을 계산했습니다.  
+ 
+결과를 살펴보면, _unigram_ 은 _history_ 를 고려하지 않으므로 context에 대한 정보가 전혀 없고, 단지 전체 단어 수에 대한 비율을 반영하고 있습니다. 
+반면, _bigram_ 은 현재 단어에 대한 확률을 계산하기 위해 이전의 단어에 대한 정보를 활용하므로, 문맥의 정보를 활용한다는 점에서 unigram model 보다 
+나은 모델이라고 할 수 있습니다. 그러나 $ P(person \mid In) $ 과 $ P(sisters \mid both) $ 의
+정보가 존재하지 않아 문장의 확률은 0 이됩니다.
+
+trigram에서는 $ P(was|person, she) $ 의 경우 unigram, bigram 보다 높은 확률을 부여하는 점에서 꽤 좋다고 할 수 있겠으나, 
+대부분의 경우 (n-1)-gram과 n-gram이 존재하지 않아 전제 문장의 확률 측면에서는 도움이 되지 않을 뿐만 아니라,
+n-gram에 대한 정보가 거의 없을 때 그 정보를 신뢰하기 어렵다는 문제가 있습니다.
+
+이와 같이 n-gram에 대한 정보가 충분하지 않아 제대로 된 확률을 계산하기 어려운 것을 **Data Sparseness** 문제라고 합니다.
+training에 사용한 데이터가 적은 것도 문제겠으나, 데이터를 늘린다할 지라도 언어의 특성상 상위 몇 단어의 빈도가 대부분을 차지하고, 
+중요한 단어(Content words)들은 그 빈도가 매우 작다는 점으로 인해 문제 해결이 어렵습니다.   
+
+뿐만 아니라, MLE가 취하는 방식이 관측된 데이터에 대한 가능성을 최대로 하는 것이기 때문에, 발견되지 않은 데이터에 대해 확률을 부여할 수 없다는 점에서,
+NLP에서의 MLE에 의한 확률적인 추론을 수행하기에는 문제가 있다는 것을 알 수 있습니다.
 
 [previous post]:https://sept1022.github.io/snlp/language-model-part-1/

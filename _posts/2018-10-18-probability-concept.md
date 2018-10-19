@@ -6,7 +6,10 @@ tags:
   - statistics
   - probability
   - Maximum Likelihood Estimation
-sitemap: false 
+sitemap: true
+toc: true
+toc_label: "Table of Contents"
+toc_sticky: true
 ---
 
 > 본포스트는 Maximum Likelihood Estimation을 간결하고 이해하기 쉽게 설명한 [Jonny Brooks Post][jonny brooks post]와 
@@ -14,11 +17,11 @@ sitemap: false
 
 ## Probability Definitions and Notation
 
-확률은 주로 어떤 사건(event)에 대한 것이다. 주사위를 던지는 것이나, 주머니에서 특정한 색의 공을 꺼내는 것을 예로 들 수가 있다.
+확률은 어떤 사건(event)에 대한 것이다. 주사위를 던지는 것이나, 주머니에서 특정한 색의 공을 꺼내는 것을 예로 들 수가 있다.
 주사위를 던지는 경우 우리는 주사위가 어떤 것이 나올지 알 수 없는데, 이렇게 무작위인 이벤트의 결과를 표현하는 변수를 
 *random variable* 이라고 한다. 
 
-우리는 주로 이런 *random variable* 이 특정한 값을 취할 확률을 알고 싶어한다. 예를 들어, 6개의 면을 가진 주사위를 던졌을 때, 
+우리는 이런 *random variable* 이 특정한 값을 취할 확률을 알고 싶어한다. 예를 들어, 6개의 면을 가진 주사위를 던졌을 때, 
 3이 나올 확률은 얼마인가? 여기에서, 각 면이 나올 확률이 같다는 조건은 매우 중요한 정보인데, 이를 통해 위 질문의 답은 1/6이라는 것을
 직관적으로 알 수 있다.
 
