@@ -43,7 +43,6 @@ In statistics, maximum likelihood estimation (MLE) is a method of estimating the
 {: .notice--info}
 
 MLE에 대한 자세한 설명은 [이전 포스팅]({% post_url 2018-10-18-probability-concept %}) 를 참고하세요
-{: .notice}MLE에 대한 자세한 설명은 [이전 포스팅]({% post_url 2018-10-18-probability-concept %}) 를 참고하세요
 {: .notice}
 
 #### MLE estimates from relative frequencies

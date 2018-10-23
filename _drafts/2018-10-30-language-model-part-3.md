@@ -63,10 +63,11 @@ $$ P_{Lid}(w_1 \cdots w_n) = \frac{C(w_1 \cdots w_n) + \lambda}{N + B\lambda} $$
 
 #### 정의
 
-> **wikipidea** :Good–Turing frequency estimation was developed by [Alan Turing]([https://en.wikipedia.org/wiki/Alan_Turing]) 
+**wikipidea** :Good–Turing frequency estimation was developed by [Alan Turing]([https://en.wikipedia.org/wiki/Alan_Turing]) 
 and his assistant [I. J. Good]([https://en.wikipedia.org/wiki/I._J._Good]) as part of their efforts at Bletchley Park to crack
 German ciphers for the Enigma machine during World War II. Turing at first modelled the frequencies as a multinomial distribution,
 but found it inaccurate. Good developed smoothing algorithms to improve the estimator's accuracy.
+{: .notice--info}
 
 Good Turing은 한번도 발견되지 않은 n-gram의 빈도는 한번 출현한 n-gram의 빈도로 추정할 수 있다는 것으로, 아래의 식으로 빈도수를 조정합니다. 
 
@@ -153,11 +154,12 @@ Solution 1과 Solution 2 혹은 어떠한 복잡한 방법을 적용하더라도
  * $\text{Constant Value} \times \sum_{i=1}^{3} {P_{GT}(r=i) \times N_i} = 7/11$
  * $\text{Constant Value} = \frac{7/11}{\sum_{i=1}^{3} P_{GT}(r=i) \times N_i}=\frac{7/11}{10/11}=7/10$
  * Finally,
-  * $\text{constant value} \times P_{GT}(r=1) = 14/110 $ 
-  * $\text{constant value} \times P_{GT}(r=2) = 7/110 $
-  * $\text{constant value} \times P_{GT}(r=3) = 21/220 $
+  * $P_{GT}(r=0) = 2/11$
+  * $\text{constant value} \times $P_{GT}(r=1) = 14/110 $ 
+  * $\text{constant value} \times $P_{GT}(r=2) = 7/110 $
+  * $\text{constant value} \times $P_{GT}(r=3) = 21/220 $
  * validataion
-  * $\sum_{i=0}^{3} P_{GT}(r=i) \times N_i = 2 \cdot 2/11 + 4 \cdot 14/110 + 2 \cdot 7/110 + 3 \cdot 21/220 = $
+  * $\sum_{i=0}^{3} P_{GT}(r=i) \times N_i = 2 \cdot 2/11 + 4 \cdot 7/110 + 2 \cdot 7/110 + 1 \cdot 21/220 = 1 $
 
 ## Interpolation
 
