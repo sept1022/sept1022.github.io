@@ -1,5 +1,5 @@
 ---
-title: "[NLP] Language Model: ngram over sparse data - Part 2"
+title: "[NLP] Language Model using n-gram Tutorial - Part 2"
 categories:
   - snlp
 tags:
@@ -7,8 +7,12 @@ tags:
   - nlp
   - statistical
   - language model
+  - maximum likelihood estimation
 sitemap: true
 toc: true
+toc_label: "Table of Contents"
+toc_sticky: true
+
 ---
 
 > 본 포스트 시리즈는 FSNLP(Foundation of Statistical Natural Language Processing)의 내용 중에서,
@@ -18,8 +22,7 @@ language modeling, HMM(hidden markov, model)을 이용한 POS(part-of-speech) Ta
 [지난 포스트][previous post]에서는 *Language Modeling* 에 대한 기본적인 사항과 n-gram을 만드는 법에 대해서 알아봤습니다.
 
 이번 시간에는 지난 시간에 만들어 두었던 n-gram 모델을 사용하여 MLE(Maximum Likelihood Estimation)에 의한 
-확률을 도출하는 법을 알아보고, Smoothing 기법을 적용하여 보다 나은 통계적 추정(Statistical Estimation)을 
-할 수 있는 방법에 대해 알아보겠습니다.
+확률을 도출하는 법을 알아보겠습니다.
 
 Language Modeling에서 우리가 관심을 갖는 것은 주어진 단어열 $P(w_1 \cdots w_{n-1})$ 의 다음에 출현할
  단어 $P(w_1 \cdots w_{n})$ 의 확률입니다.
@@ -40,6 +43,7 @@ In statistics, maximum likelihood estimation (MLE) is a method of estimating the
 {: .notice--info}
 
 MLE에 대한 자세한 설명은 [이전 포스팅]({% post_url 2018-10-18-probability-concept %}) 를 참고하세요
+{: .notice}MLE에 대한 자세한 설명은 [이전 포스팅]({% post_url 2018-10-18-probability-concept %}) 를 참고하세요
 {: .notice}
 
 #### MLE estimates from relative frequencies
@@ -178,10 +182,10 @@ MLE를 적용하여 확률을 계산했습니다.
  
 결과를 살펴보면, _unigram_ 은 _history_ 를 고려하지 않으므로 context에 대한 정보가 전혀 없고, 단지 전체 단어 수에 대한 비율을 반영하고 있습니다. 
 반면, _bigram_ 은 현재 단어에 대한 확률을 계산하기 위해 이전의 단어에 대한 정보를 활용하므로, 문맥의 정보를 활용한다는 점에서 unigram model 보다 
-나은 모델이라고 할 수 있습니다. 그러나 $ P(person \mid In) $ 과 $ P(sisters \mid both) $ 의
+나은 모델이라고 할 수 있습니다. 그러나 $ P(\text{person} \mid \text{In}) $ 과 $ P(\text{sisters} \mid \text{both}) $ 의
 정보가 존재하지 않아 문장의 확률은 0 이됩니다.
 
-trigram에서는 $ P(was|person, she) $ 의 경우 unigram, bigram 보다 높은 확률을 부여하는 점에서 꽤 좋다고 할 수 있겠으나, 
+trigram에서는 $ P(\text{was} \mid \text{person, she}) $ 의 경우 unigram, bigram 보다 높은 확률을 부여하는 점에서 꽤 좋다고 할 수 있겠으나, 
 대부분의 경우 (n-1)-gram과 n-gram이 존재하지 않아 전제 문장의 확률 측면에서는 도움이 되지 않을 뿐만 아니라,
 n-gram에 대한 정보가 거의 없을 때 그 정보를 신뢰하기 어렵다는 문제가 있습니다.
 
@@ -189,7 +193,9 @@ n-gram에 대한 정보가 거의 없을 때 그 정보를 신뢰하기 어렵�
 training에 사용한 데이터가 적은 것도 문제겠으나, 데이터를 늘린다할 지라도 언어의 특성상 상위 몇 단어의 빈도가 대부분을 차지하고, 
 중요한 단어(Content words)들은 그 빈도가 매우 작다는 점으로 인해 문제 해결이 어렵습니다.   
 
-뿐만 아니라, MLE가 취하는 방식이 관측된 데이터에 대한 가능성을 최대로 하는 것이기 때문에, 발견되지 않은 데이터에 대해 확률을 부여할 수 없다는 점에서,
+뿐만 아니라 MLE가 취하는 방식이 관측된 데이터에 대한 가능성을 최대로 하는 것이기 때문에, 발견되지 않은 데이터에 대해 확률을 부여할 수 없다는 점에서,
 NLP에서의 MLE에 의한 확률적인 추론을 수행하기에는 문제가 있다는 것을 알 수 있습니다.
+
+이번 포스트에서는 n-gram 모델을 활용하여 최대우도측정 과정을 알아봤습니다. 다음 시간에는 본 포스트에서 언급한 **Data Sparseness** 문제를 극복하기 위한 방법을 알아보겠습니다.
 
 [previous post]:https://sept1022.github.io/snlp/language-model-part-1/

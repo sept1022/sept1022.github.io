@@ -1,5 +1,5 @@
 ---
-title: "[NLP] Language Model: ngram over sparse data - Part 1"
+title: "[NLP] Language Model using n-gram Tutorial - Part 1"
 categories:
   - snlp
 tags:
