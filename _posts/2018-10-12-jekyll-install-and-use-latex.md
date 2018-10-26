@@ -7,6 +7,7 @@ tags:
   - latex
   - minimal mistake
   - osx
+sitemap: true
 ---
 
 ## 1. Install Command line tool
