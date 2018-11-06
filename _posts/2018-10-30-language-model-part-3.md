@@ -158,10 +158,6 @@ Solution 1과 Solution 2 혹은 어떠한 복잡한 방법을 적용하더라도
     * validataion
         * $\sum_{i=0}^{3} P_{GT}(r=i) \times N_i = 2 \cdot \frac{2}{11} + 4 \cdot \frac{7}{110} + 2 \cdot \frac{7}{110} + 1 \cdot \frac{21}{220} = 1 $
 
-### 2.4. Knerser-Ney smoothing
-
-절대 절하
-낮은 차수의 `n-gram`은 높은 차수의 `n-gram`의 빈도가 작거나 0일때만 효과가 있다는 것이다.
 
 ## 3. Implementation
 
