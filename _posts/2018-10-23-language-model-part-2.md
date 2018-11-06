@@ -15,10 +15,6 @@ toc_sticky: true
 
 ---
 
-> 본 포스트 시리즈는 FSNLP(Foundation of Statistical Natural Language Processing)의 내용 중에서,
-language modeling, HMM(hidden markov, model)을 이용한 POS(part-of-speech) Tagger 구현에 관한 
-내용을 정리하는 것을 목적으로 합니다.
-
 [지난 포스트][previous post]에서는 *Language Modeling* 에 대한 기본적인 사항과 n-gram을 만드는 법에 대해서 알아봤습니다.
 
 이번 시간에는 지난 시간에 만들어 두었던 n-gram 모델을 사용하여 MLE(Maximum Likelihood Estimation)에 의한 
