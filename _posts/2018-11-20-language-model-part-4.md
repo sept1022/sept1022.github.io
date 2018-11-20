@@ -14,7 +14,7 @@ toc_label: "Table of Contents"
 toc_sticky: true
 ---
 
-## 3 Combining Estimators
+## Combining Estimators
 
 위에서 알아본 방법들은 모두 n-gram의 출현빈도를 기반으로 `unseen data`에 확률을 할당하기 위한 방안들이었습니다.
 이제부터 알아볼 방법은 한 번도 출현하지 않거나 거의 출현하지 않는 `n-gram`에 대한 확률을 낮은 차수의 `n-gram`의 정보를 활용하여 보다 나은 확률 추정을 하고자 하는 방법들입니다.
@@ -23,7 +23,7 @@ toc_sticky: true
 **Note**: 일반적으로 n-gram 모델링에서, 다양한 차수의 n-gram model을 결합하는 것이 좋은 모델을 생성하는 좋은 방법입니다.
 {: .notice--info}
 
-### 3.1 Simple Interpolation
+### Simple Interpolation
 
 만일 확률값을 계산할 수 있는 다양한 모델이 존재하면, 그 모델들이 기여하는 바에 따라 적당한 가중치를 설정하여 하나의 확률 값을 도출하도록 결합할 수 있습니다.
 보통은 이런 방법을 `(finite) mixture model`이라고 하고, NLP 영역에서는 `linear interpolation`이라고 합니다. 또한, 이런 모델을 구성하는 방법으로
@@ -44,7 +44,7 @@ $ \text{where}\ 0 \leq \lambda_{i} \leq 1\ \text{and}\ \sum_i \lambda_i = 1 $
 [Expectation Maximization]([https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm]) 알고리즘에 의해 최적화된
 가중치를 자동으로 찾을 수도 있습니다. 이 방법은 따로 포스트를 만들어서 알아보겠습니다.
 
-### 3.2 Katz's backing-off
+### Katz's backing-off
 
 다른 방법으로, `n-gram`이 존재하지 않을 때 낮은 차수(`lower order`)의 n-gram으로 `후퇴(baking-off)`하는 방법입니다. 예를 들어,
 `trigam`의 정보를 찾을 때, 존재하지 않으면 반복적으로 `bigram`, `unigram`의 순으로 후퇴하여 확률값을 추정하게 됩니다.
@@ -85,3 +85,6 @@ $$\beta_{w_{i-n+1} \cdots w_{i-1}} = 1 - \sum_{\{w_i:C(w_{i-n+1} \cdots w_i) > k
 $$\alpha_{w_{i-n+1} \cdots w_{i -1}} = \frac{\beta_{w_{i-n+1} \cdots w_{i -1}}} {\sum_{ \{ w_i : C(w_{i-n+1} \cdots w_{i}) \leq k \} } P_{bo}(w_i \mid w_{i-n+2} \cdots w_{i-1})}$$
 우변의 $\sum$의 밑은 $C(w_{i-n+1} \cdots w_i) \leq k$, `n-gram`의 빈도가 `k` 값 이하인 경우에 대해,
 (n-1)-gram의 back-off된 확률 값의 합으로 정규화하는 과정이라는 것을 알 수 있습니다.
+
+지금까지 4번의 포스팅을 통해 n-gram modeling에 대해 알아봤습니다.
+Language Modeling을 활용하여 형태소 분석기는 차후 다루도록 하겠습니다.
